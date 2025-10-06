@@ -7,7 +7,7 @@ export default function App() {
 
   return (
     <main>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route exact path="/" element={<CrackyHome />} />
           <Route exact path="/endless" element={<CrackyEndless />} />
