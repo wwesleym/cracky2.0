@@ -1,0 +1,228 @@
+/* GENERAL */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color:rgb(161, 203, 212);
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+  font-family: 'Comic Sans MS';
+}
+
+/* CRACKY HOME */
+
+.home-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#navigateToCrackyEndlessButton {
+  width: 200px;
+  font-family: 'Comic Sans MS';
+  font-size: 1.5em;
+}
+
+.home-instructions {
+  background-color:white;
+  border: 3px solid blue;
+  padding: 20px;
+  margin: auto;
+  width: 700px;
+}
+
+
+/* CRACKY ENDLESS */
+
+/* NAVBAR */
+
+.nav-bar {
+  display: flex;
+  padding-top: 2%;
+  gap: 5px;
+}
+
+#crackyHomeButton {
+  width: 200px;
+  font-family: 'Comic Sans MS';
+  font-size: 1.5em;
+}
+
+#crackyDailyButton {
+  width: 200px;
+  font-family: 'Comic Sans MS';
+  font-size: 1.5em;
+}
+
+#playAgainButton {
+  margin-left: auto;
+  width: 200px;
+  font-family: 'Comic Sans MS';
+  font-size: 1.5em;
+  background-color: rgb(35, 204, 35);
+}
+
+#giveUpButton {
+  width: 200px;
+  font-family: 'Comic Sans MS';
+  font-size: 1.5em;
+  background-color: rgb(249, 96, 96);
+}
+
+#helpButton {
+  width: 100px;
+  font-family: 'Comic Sans MS';
+  font-size: 1.5em;
+  background-color: yellow;
+}
+
+#modal {
+  width: 500px;
+}
+
+#closeModal {
+  float: right;
+}
+
+/* TITLE */
+
+.title-label {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.title-label h1 {
+  margin-bottom: 0;
+}
+
+.title-label h3 {
+  margin-top: 0;
+}
+
+/* MAIN GAME */
+
+.row {
+  width: 100%;
+}
+
+.input-row {
+  display: inline-block;
+  text-align: center;
+  padding-left: 15%;
+  padding-top: 1%;
+  width: 60%;
+}
+
+.input-value {
+  text-align: center;
+  font-size: 2.25em;
+  width: 20%;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  margin: 0.1em;
+  font-family:'Comic Sans MS';
+  border-radius: 15px;
+}
+
+.birds-bees-row {
+  display: inline-block;
+  text-align: center;
+  width: 30%;
+  padding-right:1%;
+}
+
+.birds {
+  display: inline-block;
+  width: 30%;
+  margin: 3%;
+  font-size: 2em;
+  color:blue;
+}
+
+.bees {
+  display: inline-block;
+  width: 30%;
+  margin: 3%;
+  font-size: 2em;
+  color:blueviolet;
+}
+
+
+/* removes arrows for number input */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* GIVE UP TEXT */
+#giveUpText {
+  /* margin: 3%; */
+  text-align: center;
+  /* font-family:'Comic Sans MS'; */
+  font-size: 1.2em;
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#crackButton {
+  font-family:'Comic Sans MS';
+  font-size: 2em;
+}
+
+
+/* MEDIA */
+@media screen and (max-width: 910px) {
+  body {
+    background-color: lightgreen;
+    width: 100%;
+    min-width: 475px;
+  }
+
+  #crackyHomeButton {
+    width: 100px;
+    font-family: 'Comic Sans MS';
+    font-size: 1em;
+  }
+  
+  #crackyDailyButton {
+    width: 100px;
+    font-family: 'Comic Sans MS';
+    font-size: 1em;
+  }
+  
+  #playAgainButton {
+    margin-left: auto;
+    width: 100px;
+    font-family: 'Comic Sans MS';
+    font-size: 1em;
+  }
+  
+  #giveUpButton {
+    width: 100px;
+    font-family: 'Comic Sans MS';
+    font-size: 1em;
+  }
+  
+  #helpButton {
+    width: 50px;
+    font-family: 'Comic Sans MS';
+    font-size: 1em;
+  }
+
+  .birds {
+    font-size: 1.2em;
+  }
+
+  .bees {
+    font-size: 1.2em;
+  }
+}
