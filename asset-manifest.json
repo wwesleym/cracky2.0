@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/cracky2.0/static/css/main.a1ec4c12.css",
+    "main.js": "/cracky2.0/static/js/main.f22131c1.js",
+    "index.html": "/cracky2.0/index.html",
+    "main.a1ec4c12.css.map": "/cracky2.0/static/css/main.a1ec4c12.css.map",
+    "main.f22131c1.js.map": "/cracky2.0/static/js/main.f22131c1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a1ec4c12.css",
+    "static/js/main.f22131c1.js"
+  ]
+}
