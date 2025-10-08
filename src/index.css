@@ -127,14 +127,14 @@ body {
   border-radius: 15px;
 }
 
-.birds-bees-row {
+.clicks-clacks-row {
   display: inline-block;
   text-align: center;
   width: 30%;
   padding-right:1%;
 }
 
-.birds {
+.clicks {
   display: inline-block;
   width: 30%;
   margin: 3%;
@@ -142,7 +142,7 @@ body {
   color:blue;
 }
 
-.bees {
+.clacks {
   display: inline-block;
   width: 30%;
   margin: 3%;
@@ -218,11 +218,11 @@ input::-webkit-inner-spin-button {
     font-size: 1em;
   }
 
-  .birds {
-    font-size: 1.2em;
+  .clicks {
+    font-size: 1em;
   }
 
-  .bees {
-    font-size: 1.2em;
+  .clacks {
+    font-size: 1em;
   }
 }

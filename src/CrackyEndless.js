@@ -19,8 +19,8 @@ export default function CrackyEndless() {
         secondInput: "",
         thirdInput: "",
         fourthInput: "",
-        birdsValue: "?",
-        beesValues: "?",
+        clicksValue: "?",
+        clacksValues: "?",
         disabledFlag: false
     }
   )
@@ -79,7 +79,7 @@ export default function CrackyEndless() {
     generateAnswer()
   }, [])
 
-  function calculateBirdsBeesCount() {
+  function calculateClicksClacksCount() {
     // get values from input
     const inputList = [
       inputRows[inputRows.length-1].inputValues.firstInput, 
@@ -116,8 +116,8 @@ export default function CrackyEndless() {
     }
 
     let newInputValues = [...inputRows];
-    newInputValues[inputRows.length-1].inputValues.birdsValue = birdCount;
-    newInputValues[inputRows.length-1].inputValues.beesValues = beeCount;
+    newInputValues[inputRows.length-1].inputValues.clicksValue = birdCount;
+    newInputValues[inputRows.length-1].inputValues.clacksValues = beeCount;
     setInputValues(newInputValues);
 
     if (birdCount === 4) {
@@ -153,12 +153,12 @@ export default function CrackyEndless() {
     } 
 
     setGuessCount(guessCount + 1)
-    const birdsBeesCount = calculateBirdsBeesCount();
+    const clicksClacksCount = calculateClicksClacksCount();
 
-    if (birdsBeesCount === 1) {
+    if (clicksClacksCount === 1) {
       // error thrown
       return;
-    } else if (birdsBeesCount === 2) {
+    } else if (clicksClacksCount === 2) {
       // winner
       winner();
       return;
@@ -208,15 +208,15 @@ export default function CrackyEndless() {
           <button id="closeModal" className="dialog-close-btn">Close</button>
           <h2>How to CRACK</h2>
           <h4>Crack the code in the least number of guesses!</h4>
-          - The number of birds and bees will be given to show how close your guess was to the code.<br></br>
-          - Birds = correct digit, correct position <br></br>
-          - Bees = correct digit, incorrect position <br></br>
+          - The number of clicks and clacks will be given to show how close your guess was to the code.<br></br>
+          - clicks = correct digit, correct position <br></br>
+          - clacks = correct digit, incorrect position <br></br>
           <h4>Examples</h4>
-          <p>2834 = 1 birds, 0 bees <br></br>
+          <p>2834 = 1 clicks, 0 clacks <br></br>
           1 of these digits is correct and in the correct position. </p>
-          <p>5107 = 2 birds, 2 bees <br></br>
+          <p>5107 = 2 clicks, 2 clacks <br></br>
           2 of these digits are correct and in the correct position, and the other 2 digits are correct but in the incorrect position.</p>
-          <p>9638 = 0 birds, 1 bees <br></br>
+          <p>9638 = 0 clicks, 1 clacks <br></br>
           1 of these digits is correct and in the incorrect position.</p>
         </dialog>
       </div>
@@ -235,9 +235,9 @@ export default function CrackyEndless() {
           <input type="number" className="input-value" disabled/>
           <input type="number" className="input-value" disabled/>
         </div>
-        <div className="birds-bees-row">
-          <label className="birds">birds</label>
-          <label className="bees">bees</label>
+        <div className="clicks-clacks-row">
+          <label className="clicks">clicks</label>
+          <label className="clacks">clacks</label>
         </div>
       </div>
 
@@ -288,9 +288,9 @@ export default function CrackyEndless() {
                 disabled={row.inputValues.disabledFlag}
               />
             </div>
-            <div className="birds-bees-row">
-              <label className="birds">{row.inputValues.birdsValue}</label>
-              <label className="bees">{row.inputValues.beesValues}</label>
+            <div className="clicks-clacks-row">
+              <label className="clicks">{row.inputValues.clicksValue}</label>
+              <label className="clacks">{row.inputValues.clacksValues}</label>
             </div>
           </div>
         )
