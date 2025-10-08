@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {HashRouter, Routes, Route} from "react-router-dom";
 import CrackyHome from './CrackyHome'
 import CrackyEndless from './CrackyEndless'
 
@@ -7,12 +7,12 @@ export default function App() {
 
   return (
     <main>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <HashRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route exact path="/" element={<CrackyHome />} />
           <Route exact path="/endless" element={<CrackyEndless />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </main>
   )
 }
