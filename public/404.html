@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript">
+      var basePath = '/cracky2.0';
+
+      // strip basePath and store remaining path
+      var redirectTo = location.pathname.replace(basePath, '') + location.search + location.hash;
+
+      // Save the path and redirect to basePath
+      sessionStorage.redirect = redirectTo;
+      window.location.href = basePath + '/';
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>

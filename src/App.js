@@ -1,18 +1,25 @@
-import React from 'react'
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import CrackyHome from './CrackyHome'
-import CrackyEndless from './CrackyEndless'
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate } from "react-router-dom";
+import CrackyHome from './CrackyHome';
+import CrackyEndless from './CrackyEndless';
 
 export default function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const redirect = sessionStorage.getItem('redirect');
+    if (redirect) {
+      sessionStorage.removeItem('redirect');
+      navigate(redirect, { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <main>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Routes>
-          <Route exact path="/" element={<CrackyHome />} />
-          <Route exact path="/endless" element={<CrackyEndless />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<CrackyHome />} />
+        <Route exact path="/endless" element={<CrackyEndless />} />
+      </Routes>
     </main>
-  )
+  );
 }
