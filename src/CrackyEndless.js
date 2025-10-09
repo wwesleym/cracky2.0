@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import Confetti from "react-confetti"
 import {useNavigate} from 'react-router-dom';
 
@@ -39,92 +39,9 @@ export default function CrackyEndless() {
     setInputValues(newInputValues)
   }
 
-  const handleKeyUp = event => {
-    const inputNameList = ["firstInput", "secondInput", "thirdInput", "fourthInput"]
-    var ind = -1
-    for (let i = 0; i < 4; i ++) {
-      if (event.target.name === inputNameList[i]) {
-        ind = i
-      }
-    }
-    const nums = [0,1,2,3,4,5,6,7,8,9]
-    if ((event.key in nums || event.key === "ArrowRight") && ind < 3) {
-      // go to next input
-      document.querySelector(`input:not([disabled])[name=${inputNameList[ind+1]}]`).focus();
-    } else if ((event.key === "Backspace" || event.key === "ArrowLeft") && ind > 0) {
-      // go to previous input
-      document.querySelector(`input:not([disabled])[name=${inputNameList[ind-1]}]`).focus();
-    } else if (event.key === "Enter") {
-      crackButton()
-    }
-  }
-
   const [inputRows, setInputRows] = React.useState([{inputValues}])
 
   const [codeAnswer, setCodeAnswer] = React.useState();
-  // generate random answer
-  function generateAnswer() {
-    var temp = [];
-    while (temp.length < 4) {
-        var n = Math.floor(Math.random() * 10);
-        if (!temp.includes(n) && n !== "") {
-            temp.push(n);
-        }
-    }
-    let answer = Number(temp.join(""));
-    setCodeAnswer(answer);
-  }
-
-  React.useEffect(() => {
-    generateAnswer()
-  }, [])
-
-  function calculateClicksClacksCount() {
-    // get values from input
-    const inputList = [
-      inputRows[inputRows.length-1].inputValues.firstInput, 
-      inputRows[inputRows.length-1].inputValues.secondInput, 
-      inputRows[inputRows.length-1].inputValues.thirdInput, 
-      inputRows[inputRows.length-1].inputValues.fourthInput
-    ]
-    if (inputList.includes("") || inputList.includes(undefined)) {
-      alert("Please fill in all digits!");
-      return 1;
-    }
-    else if (new Set(inputList).size !== inputList.length) {
-      alert("No duplicate digits!")
-      return 1;
-    }
-
-    // set each value in inputList to Number
-    for (let i = 0; i < 4; i++) {
-      inputList[i] = Number(inputList[i])
-    }
-    
-    var clickCount = 0;
-    var clackCount = 0;
-    var codeAnswerList = Array.from(String(codeAnswer), Number);
-
-    for (let i = 0; i < 4; i++) {
-      if (inputList[i] === codeAnswerList[i]) {
-        // correct number, correct position
-        clickCount += 1;
-      } else if (codeAnswerList.includes(inputList[i])) {
-        // correct number, incorrect position
-        clackCount += 1;
-      }
-    }
-
-    let newInputValues = [...inputRows];
-    newInputValues[inputRows.length-1].inputValues.clicksValue = clickCount;
-    newInputValues[inputRows.length-1].inputValues.clacksValues = clackCount;
-    setInputValues(newInputValues);
-
-    if (clickCount === 4) {
-      return 2;
-    }
-  }
-
 
   // track number of guesses
   const [guessCount, setGuessCount] = React.useState(1)
@@ -135,40 +52,171 @@ export default function CrackyEndless() {
   // track give up 
   const [giveUpFlag, setGiveUpFlag] = React.useState(false)
 
-  function winner() {
-    inputRows[inputRows.length-1].inputValues.disabledFlag = true
-    setCracked(true)
-    guessCount > 1 ? alert(`YOU CRACKED IT IN ${guessCount} GUESSES!`) : alert(`YOU CRACKED IT IN ${guessCount} GUESS!`)
-  }
+  const calculateClicksClacksCount = useCallback(() => {
+    const lastRow = inputRows[inputRows.length - 1];
+    if (!lastRow) return 1; // no inputs yet
 
-  function refreshPage() {
+    const inputList = [
+      lastRow.inputValues.firstInput,
+      lastRow.inputValues.secondInput,
+      lastRow.inputValues.thirdInput,
+      lastRow.inputValues.fourthInput
+    ];
+
+    if (inputList.includes("") || inputList.includes(undefined)) {
+      alert("Please fill in all digits!");
+      return 1;
+    } 
+    if (new Set(inputList).size !== inputList.length) {
+      alert("No duplicate digits!");
+      return 1;
+    }
+
+    // Convert all to Number
+    for (let i = 0; i < 4; i++) {
+      inputList[i] = Number(inputList[i]);
+    }
+
+    let clickCount = 0;
+    let clackCount = 0;
+    const codeAnswerList = Array.from(String(codeAnswer), Number);
+
+    for (let i = 0; i < 4; i++) {
+      if (inputList[i] === codeAnswerList[i]) {
+        clickCount++;
+      } else if (codeAnswerList.includes(inputList[i])) {
+        clackCount++;
+      }
+    }
+
+    // Update inputValues for last row
+    setInputValues(prevInputValues => {
+      // Clone prevInputValues to avoid mutation
+      const newInputValues = [...inputRows];
+      newInputValues[inputRows.length - 1].inputValues.clicksValue = clickCount;
+      newInputValues[inputRows.length - 1].inputValues.clacksValues = clackCount;
+      return newInputValues;
+    });
+
+    if (clickCount === 4) {
+      return 2;
+    }
+
+    return 0; // default return if no win or error
+  }, [inputRows, codeAnswer]);
+
+
+  const winner = useCallback(() => {
+    setInputRows(prevRows => {
+      const newRows = [...prevRows];
+      if (newRows.length > 0) {
+        newRows[newRows.length - 1].inputValues.disabledFlag = true;
+      }
+      return newRows;
+    });
+    setCracked(true);
+    alert(`YOU CRACKED IT IN ${guessCount} GUESS${guessCount > 1 ? 'ES' : ''}!`);
+  }, [guessCount]);
+
+
+  const refreshPage = useCallback(() => {
     window.location.reload();
-  }
+  }, []);
 
-  function crackButton() {
-    // new game button
+
+  const crackButton = useCallback(() => {
     if (cracked || giveUpFlag) {
       refreshPage();
       return;
     } 
 
-    setGuessCount(guessCount + 1)
+    setGuessCount(c => c + 1);
+
     const clicksClacksCount = calculateClicksClacksCount();
 
     if (clicksClacksCount === 1) {
-      // error thrown
       return;
     } else if (clicksClacksCount === 2) {
-      // winner
       winner();
       return;
     }
 
-    inputRows[inputRows.length-1].inputValues.disabledFlag = true
-    setInputRows(prevInputRows => {
-      return [...prevInputRows, {inputValues}]
-    })
+    inputRows[inputRows.length - 1].inputValues.disabledFlag = true;
+
+    setInputRows(prevInputRows => [...prevInputRows, { inputValues }]);
+  }, [cracked, giveUpFlag, calculateClicksClacksCount, winner, inputRows, inputValues, refreshPage]);
+
+
+  React.useEffect(() => {
+    const handleGlobalKeyDown = (event) => {
+      const nums = [0,1,2,3,4,5,6,7,8,9]
+
+      // edit the last row
+      const index = inputRows.length - 1;
+
+      // current row data
+      let newInputValues = [...inputRows];
+      let current = newInputValues[index].inputValues;
+
+      let digits = [
+        current.firstInput || "",
+        current.secondInput || "",
+        current.thirdInput || "",
+        current.fourthInput || ""
+      ];
+
+      // ignore if inputs are disabled
+      if (current.disabledFlag) return;
+
+      // handle inputs
+      if (event.key in nums) {
+        let nextEmptyIndex = digits.findIndex(d => d === "");
+        if (nextEmptyIndex !== -1) {
+          digits[nextEmptyIndex] = event.key;
+        }
+      } else if (event.key === "Backspace") {
+        let lastFilledIndex = [...digits].reverse().findIndex(d => d !== "");
+        if (lastFilledIndex !== -1) {
+          digits[3 - lastFilledIndex] = "";
+        }
+      } else if (event.key === "Enter") {
+        crackButton();
+      }
+
+      // update state
+      current.firstInput = digits[0];
+      current.secondInput = digits[1];
+      current.thirdInput = digits[2];
+      current.fourthInput = digits[3];
+      newInputValues[index].inputValues = current;
+
+      setInputValues(newInputValues);
+    };
+
+    // add listener
+    window.addEventListener("keydown", handleGlobalKeyDown);
+
+    // cleanup on unmount
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [inputRows, setInputValues, crackButton])
+
+
+  // generate random answer
+  function generateAnswer() {
+    var temp = [];
+    while (temp.length < 4) {
+        var n = Math.floor(Math.random() * 10);
+        if (!temp.includes(n)) {
+            temp.push(n);
+        }
+    }
+    let answer = temp.join("");
+    setCodeAnswer(answer);
   }
+
+  React.useEffect(() => {
+    generateAnswer()
+  }, [])
 
   function handleGiveUp() {
     if (giveUpFlag) {
@@ -251,41 +299,40 @@ export default function CrackyEndless() {
                 className="input-value" 
                 onInput={checkNumberFieldLength} 
                 onChange={handleChange(index)} 
-                onKeyUp={handleKeyUp}
                 name="firstInput"
                 value={row.inputValues.firstInput || ''}
                 disabled={row.inputValues.disabledFlag}
-                autoFocus
+                readOnly
               />
               <input 
                 type="number" 
                 className="input-value" 
                 onInput={checkNumberFieldLength} 
                 onChange={handleChange(index)} 
-                onKeyUp={handleKeyUp}
                 name="secondInput"
                 value={row.inputValues.secondInput || ''}
                 disabled={row.inputValues.disabledFlag}
+                readOnly
               />
               <input 
                 type="number" 
                 className="input-value" 
                 onInput={checkNumberFieldLength} 
                 onChange={handleChange(index)} 
-                onKeyUp={handleKeyUp}
                 name="thirdInput"
                 value={row.inputValues.thirdInput || ''}
                 disabled={row.inputValues.disabledFlag}
+                readOnly
               />
               <input 
                 type="number" 
                 className="input-value" 
                 onInput={checkNumberFieldLength} 
                 onChange={handleChange(index)} 
-                onKeyUp={handleKeyUp}
                 name="fourthInput"
                 value={row.inputValues.fourthInput || ''}
                 disabled={row.inputValues.disabledFlag}
+                readOnly
               />
             </div>
             <div className="clicks-clacks-row">
