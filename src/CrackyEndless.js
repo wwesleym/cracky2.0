@@ -101,26 +101,26 @@ export default function CrackyEndless() {
       inputList[i] = Number(inputList[i])
     }
     
-    var birdCount = 0;
-    var beeCount = 0;
+    var clickCount = 0;
+    var clackCount = 0;
     var codeAnswerList = Array.from(String(codeAnswer), Number);
 
     for (let i = 0; i < 4; i++) {
       if (inputList[i] === codeAnswerList[i]) {
         // correct number, correct position
-        birdCount += 1;
+        clickCount += 1;
       } else if (codeAnswerList.includes(inputList[i])) {
         // correct number, incorrect position
-        beeCount += 1;
+        clackCount += 1;
       }
     }
 
     let newInputValues = [...inputRows];
-    newInputValues[inputRows.length-1].inputValues.clicksValue = birdCount;
-    newInputValues[inputRows.length-1].inputValues.clacksValues = beeCount;
+    newInputValues[inputRows.length-1].inputValues.clicksValue = clickCount;
+    newInputValues[inputRows.length-1].inputValues.clacksValues = clackCount;
     setInputValues(newInputValues);
 
-    if (birdCount === 4) {
+    if (clickCount === 4) {
       return 2;
     }
   }
