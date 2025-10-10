@@ -32,7 +32,8 @@ body {
   border: 3px solid blue;
   padding: 20px;
   margin: auto;
-  width: 700px;
+  max-width: 700px;
+  width: 80%;
 }
 
 
@@ -131,7 +132,7 @@ body {
   display: inline-block;
   text-align: center;
   width: 30%;
-  padding-right:1%;
+  padding-right: 1%;
 }
 
 .clicks {
@@ -150,42 +151,52 @@ body {
   color:blueviolet;
 }
 
-
-/* removes arrows for number input */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 /* GIVE UP TEXT */
 #giveUpText {
-  /* margin: 3%; */
+  margin: 3%;
   text-align: center;
-  /* font-family:'Comic Sans MS'; */
+  font-family:'Comic Sans MS';
   font-size: 1.2em;
 }
 
-/* BUTTONS */
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* NUMBER PAD */
+.number-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 10px;                          
+  max-width: 250px;                    
+  margin: 0 auto;                     
+  padding: 10px;                       
 }
 
-#crackButton {
-  font-family:'Comic Sans MS';
-  font-size: 2em;
+.num-btn {
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 2rem;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
+
 
 
 /* MEDIA */
 @media screen and (max-width: 910px) {
+  /* CRACKY HOME */
+  .home-instructions {
+    width: 99%;
+  }
+
   body {
     background-color: lightgreen;
     width: 100%;
     min-width: 475px;
   }
+
+  /* CRACKY ENDLESS */
 
   #crackyHomeButton {
     width: 100px;
@@ -218,11 +229,27 @@ input::-webkit-inner-spin-button {
     font-size: 1em;
   }
 
+  .title-label {
+    font-size: 1em;
+  }
+
   .clicks {
     font-size: 1em;
   }
 
   .clacks {
     font-size: 1em;
+  }
+
+  .input-value {
+    font-size: 1.5em;
+  }
+
+  .number-pad {
+    gap: 5px; 
+  }
+
+  .num-btn {
+    font-size: 1rem;
   }
 }

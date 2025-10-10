@@ -147,9 +147,62 @@ export default function CrackyEndless() {
   }, [cracked, giveUpFlag, calculateClicksClacksCount, winner, inputRows, inputValues, refreshPage]);
 
 
+  // scroll to the bottom when inputRows or giveUpFlag is updated 
+  React.useEffect(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth"
+    });
+  }, [inputRows, giveUpFlag]); 
+
+
+  const handleNumClick = (num) => {
+    const nums = "0123456789";
+
+    // edit the last row
+    const index = inputRows.length - 1;
+
+    // current row data
+    let newInputValues = [...inputRows];
+    let current = newInputValues[index].inputValues;
+    let digits = [
+      current.firstInput || "",
+      current.secondInput || "",
+      current.thirdInput || "",
+      current.fourthInput || ""
+    ];
+
+    // ignore if inputs are disabled
+    if (current.disabledFlag) return;
+
+    // handle inputs
+    if (nums.includes(num)) {
+      // update next empty spot
+      let nextEmptyIndex = digits.findIndex(d => d === "");
+      if (nextEmptyIndex !== -1) {
+        digits[nextEmptyIndex] = num.toString();
+      }
+    } else if (num === -1) {
+      let lastFilledIndex = [...digits].reverse().findIndex(d => d !== "");
+      if (lastFilledIndex !== -1) {
+        digits[3 - lastFilledIndex] = "";
+      }
+    }
+
+    // update state
+    current.firstInput = digits[0];
+    current.secondInput = digits[1];
+    current.thirdInput = digits[2];
+    current.fourthInput = digits[3];
+    newInputValues[index].inputValues = current;
+
+    setInputValues((prevValues) => [...newInputValues]);
+  };
+
+
   React.useEffect(() => {
     const handleGlobalKeyDown = (event) => {
-      const nums = [0,1,2,3,4,5,6,7,8,9]
+      const nums = "0123456789";
 
       // edit the last row
       const index = inputRows.length - 1;
@@ -169,7 +222,7 @@ export default function CrackyEndless() {
       if (current.disabledFlag) return;
 
       // handle inputs
-      if (event.key in nums) {
+      if (nums.includes(event.key)) {
         let nextEmptyIndex = digits.findIndex(d => d === "");
         if (nextEmptyIndex !== -1) {
           digits[nextEmptyIndex] = event.key;
@@ -223,9 +276,6 @@ export default function CrackyEndless() {
       return;
     }
     setGiveUpFlag(true);
-
-    // scroll to bottom of page
-    window.scrollTo(0, document.body.scrollHeight);
 
     // disable last row
     inputRows[inputRows.length-1].inputValues.disabledFlag = true
@@ -347,10 +397,23 @@ export default function CrackyEndless() {
       {!cracked && giveUpFlag ? <p id="giveUpText">GAME OVER! The code is: {codeAnswer}</p> : ""}
       
       <br></br>
-      {/* buttons */}
-      <div className="buttons">
-        <button id="crackButton" type="button" onClick={crackButton}>{cracked || giveUpFlag ? "New CRACK" : "CRACK!"}</button>
-      </div>   
+
+      {/* number pad */}
+      <div id="number-pad" className="number-pad">
+        <button className="num-btn" onClick={() => handleNumClick(1)}>1</button>
+        <button className="num-btn" onClick={() => handleNumClick(2)}>2</button>
+        <button className="num-btn" onClick={() => handleNumClick(3)}>3</button>
+        <button className="num-btn" onClick={() => handleNumClick(4)}>4</button>
+        <button className="num-btn" onClick={() => handleNumClick(5)}>5</button>
+        <button className="num-btn" onClick={() => handleNumClick(6)}>6</button>
+        <button className="num-btn" onClick={() => handleNumClick(7)}>7</button>
+        <button className="num-btn" onClick={() => handleNumClick(8)}>8</button>
+        <button className="num-btn" onClick={() => handleNumClick(9)}>9</button>
+        <button className="num-btn" onClick={() => handleNumClick(0)}>0</button>
+        <button className="num-btn" onClick={() => handleNumClick(-1)}>←</button>
+        <button classNAme="num-btn" id="crackButton" type="button" onClick={crackButton}>{cracked || giveUpFlag ? "New CRACK" : "CRACK!"}</button>
+      </div>
+
     </div>
   )
 }
