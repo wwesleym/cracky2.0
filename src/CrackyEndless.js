@@ -130,8 +130,6 @@ export default function CrackyEndless() {
       return;
     } 
 
-    setGuessCount(c => c + 1);
-
     const clicksClacksCount = calculateClicksClacksCount();
 
     if (clicksClacksCount === 1) {
@@ -142,6 +140,7 @@ export default function CrackyEndless() {
     }
 
     inputRows[inputRows.length - 1].inputValues.disabledFlag = true;
+    setGuessCount(c => c + 1);
 
     setInputRows(prevInputRows => [...prevInputRows, { inputValues }]);
   }, [cracked, giveUpFlag, calculateClicksClacksCount, winner, inputRows, inputValues, refreshPage]);
