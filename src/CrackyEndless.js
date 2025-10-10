@@ -411,7 +411,7 @@ export default function CrackyEndless() {
         <button className="num-btn" onClick={() => handleNumClick(9)}>9</button>
         <button className="num-btn" onClick={() => handleNumClick(0)}>0</button>
         <button className="num-btn" onClick={() => handleNumClick(-1)}>←</button>
-        <button classNAme="num-btn" id="crackButton" type="button" onClick={crackButton}>{cracked || giveUpFlag ? "New CRACK" : "CRACK!"}</button>
+        <button className="num-btn" id="crackButton" type="button" onClick={crackButton}>{cracked || giveUpFlag ? "New CRACK" : "CRACK!"}</button>
       </div>
 
     </div>
